@@ -56,3 +56,20 @@ Defined in `tailwind.config.js` — custom colors: `poker-green`, `poker-felt`, 
 - Card notation: two-character strings like `"As"` (Ace of spades), `"Th"` (Ten of hearts)
 - Hand notation: `"AKs"` (suited), `"AKo"` (offsuit), `"AA"` (pair)
 - All poker math is client-side (no backend). Equity uses Monte Carlo simulation with configurable iteration count.
+
+## React 19 lint rules (gotcha)
+
+The repo's ESLint config enforces `react-hooks/purity` and `react-hooks/set-state-in-effect`. Practical implications:
+
+- Do not call `Math.random()` (or other impure calls) during render. Put them in event handlers or initializer callbacks.
+- Do not call a `setState` setter synchronously inside a `useEffect` body. If state needs to be seeded when something happens, drive it from the event handler that caused the change, not an effect that reacts to it.
+
+## Deployment
+
+Hosted on Vercel, linked to GitHub repo `mfish324/poker-trainer`. **Every push to `master` auto-deploys to production.** Vercel auto-detects the Vite preset (build: `vite build`, output: `dist/`).
+
+- Manual CLI deploy: `vercel --prod` (CLI is already logged in as `mfish324`)
+- Project scope: `matthew-okeefes-projects-bdf1bb50/poker-trainer`
+- Inspect dashboard: https://vercel.com/matthew-okeefes-projects-bdf1bb50/poker-trainer
+
+Local `.vercel/` and `.env*.local` files are gitignored (created by the CLI on first link).
