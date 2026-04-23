@@ -53,7 +53,7 @@ export default function BoardTextureAnalyzer() {
   }, [analysis]);
 
   // Quiz functions
-  const generateQuizBoard = () => {
+  const randomBoard = (): CardType[] => {
     const suits: CardType['suit'][] = ['s', 'h', 'd', 'c'];
     const ranks: CardType['rank'][] = ['A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'];
 
@@ -70,7 +70,11 @@ export default function BoardTextureAnalyzer() {
       }
     }
 
-    setQuizBoard(cards);
+    return cards;
+  };
+
+  const generateQuizBoard = () => {
+    setQuizBoard(randomBoard());
     setQuizAnswer(null);
     setShowQuizResult(false);
   };
@@ -88,10 +92,6 @@ export default function BoardTextureAnalyzer() {
     }));
   };
 
-  // Initialize quiz board
-  if (mode === 'quiz' && quizBoard.length === 0) {
-    generateQuizBoard();
-  }
 
   return (
     <div className="w-full max-w-4xl mx-auto">
@@ -124,7 +124,7 @@ export default function BoardTextureAnalyzer() {
             Examples
           </button>
           <button
-            onClick={() => { setMode('quiz'); setQuizBoard([]); }}
+            onClick={() => { setMode('quiz'); generateQuizBoard(); }}
             className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
               mode === 'quiz'
                 ? 'bg-blue-600 text-white'
